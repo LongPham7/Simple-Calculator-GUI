@@ -1,3 +1,3 @@
 # Simple-Calculator-GUI
-This is a GUI application of a calculator. It allows you to type in numbers and operators to execute simple arithmetic computation.
-Please note that this project is still incomplete - it needs more refinement and I currently work on it. 
+This is a calculator with a GUI that allows you to perform simple arithmetic. Users click buttons
+on the GUI to input operands and operators. 
