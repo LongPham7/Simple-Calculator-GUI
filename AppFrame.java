@@ -34,8 +34,7 @@ public class AppFrame {
 	JButton buttonDel = new JButton("Delete");
 	JTextField field = new JTextField(32);
 	
-	/** Whether the expression on the display is in the normal form. */
-	boolean cle = false;
+	private ArithmeticExpression exp = null;
 	
 	public void activate() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,10 +101,10 @@ public class AppFrame {
 		button7.addActionListener(new DigitListener(7));
 		button8.addActionListener(new DigitListener(8));
 		button9.addActionListener(new DigitListener(9));
-		buttonMul.addActionListener(new OperatorListener("*"));
-		buttonDiv.addActionListener(new OperatorListener("/"));
-		buttonAdd.addActionListener(new OperatorListener("+"));
-		buttonSub.addActionListener(new OperatorListener("-"));
+		buttonMul.addActionListener(new BinaryOperatorListener(BinaryOp.MUL));
+		buttonDiv.addActionListener(new BinaryOperatorListener(BinaryOp.DIV));
+		buttonAdd.addActionListener(new BinaryOperatorListener(BinaryOp.ADD));
+		buttonSub.addActionListener(new BinaryOperatorListener(BinaryOp.SUB));
 		buttonEq.addActionListener(new EqListener());
 		buttonClear.addActionListener(new ClearListener());
 		buttonPoint.addActionListener(new PointListener());
@@ -117,9 +116,12 @@ public class AppFrame {
 		frame.setVisible(true);
 	}
 	
-	private void changeFont(JButton b, int n) {
-		Font font = new Font(Font.DIALOG, n, n);
-		b.setFont(font);
+	public void register(ArithmeticExpression exp) {
+		this.exp = exp;
+	}
+	
+	public void update(String s) {
+		field.setText(s);
 	}
 	
 	/** Listener class for buttons of digits. */
@@ -131,39 +133,20 @@ public class AppFrame {
 		}
 
 		public void actionPerformed(ActionEvent event) {
-			if (cle == false) {
-				addWord(Integer.toString(value));
-			} 
-			else {
-				field.setText(Integer.toString(value));
-				cle = false;
-			}
+			exp.insert(value);
 		}
 	}
 
 	/** Listener class for buttons of operators. */
-	class OperatorListener implements ActionListener {
-		String n;
+	class BinaryOperatorListener implements ActionListener {
+		BinaryOp op;
 
-		public OperatorListener(String op) {
-			n = op;
+		public BinaryOperatorListener(BinaryOp b) {
+			op = b;
 		}
 
 		public void actionPerformed(ActionEvent event) {
-			addWord(n);
-			try {
-				if (secondOp()) {
-					field.setText(Double.toString(calculate(field.getText().substring(0,
-									field.getText().length() - 1))));
-					addWord(n);
-				}
-				cle = false;
-			} 
-			catch (Exception e) {
-				field.setText("Error");
-				cle = true;
-			}
-
+			exp.insert(op);
 		}
 	}
 
@@ -171,7 +154,7 @@ public class AppFrame {
 	class ClearListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
-			field.setText("");
+			exp.clear();
 		}
 	}
 
@@ -179,8 +162,7 @@ public class AppFrame {
 	class EqListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
-			field.setText(Double.toString(calculate(field.getText())));
-			cle = true;
+			exp.reduce();
 		}
 	}
 
@@ -188,95 +170,34 @@ public class AppFrame {
 	class PointListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent event) {
-			addWord(".");
+			exp.insertDecimalPoint();
 		}
 	}
 
 	/** Listener class for the ^2 button. */
 	class SquareListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			String equ = field.getText();
-			double a = Double.parseDouble(equ);
-			double b = a * a;
-			field.setText(Double.toString(b));
+			exp.square();
 		}
 	}
 
 	/** Listener class for the delete button. */
 	class DelListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			String n = field.getText();
-			field.setText(n.substring(0, n.length() - 1));
+			exp.delete();
 		}
 	}
 
 	/** Listener class for the square root button. */
 	class SqrtListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			String n = field.getText();
-			double result = Math.sqrt(Double.parseDouble(n));
-			field.setText(Double.toString(result));
+			exp.sqrt();
 		}
 	}
 	
-	/** Adds an input string to the text field in the calculator.*/
-	private void addWord(String n) {
-		String result = field.getText() + n;
-		field.setText(result);
+	private void changeFont(JButton b, int n) {
+		Font font = new Font(Font.DIALOG, n, n);
+		b.setFont(font);
 	}
-
-	/** Evaluates an input string that contains at most one operator. */
-	private double calculate(String n) {
-		String equ = n;
-		double result = 0.0;
-		char op = '+';
-		int stop = equ.length();
-		for (int i = 0; i < equ.length(); i++) {
-			char A = equ.charAt(i);
-			if (A == '+' || A == '-' || A == '*' || A == '/') {
-				stop = i;
-				op = A;
-				break;
-			}
-		}
-		double first = Double.parseDouble(equ.substring(0, stop));
-		double second = Double.parseDouble(equ.substring(stop + 1));
-		if (op == '*') {
-			result = first * second;
-		} 
-		else if (op == '/') {
-			result = first / second;
-		} 
-		else if (op == '-') {
-			result = first - second;
-		} 
-		else if (op == '+') {
-			result = first + second;
-		} 
-		else {
-			result = first;
-		}
-
-		return result;
-
-	}
-
-	/** Returns true if the expression contains two operators. */
-	private boolean secondOp() {
-		boolean find = false;
-		boolean find2 = false;
-		String n = field.getText();
-		for (int i = 0; i < n.length(); i++) {
-			char a = n.charAt(i);
-			if (find == false && (a == '+' || a == '-' || a == '*' || a == '/')) {
-				find = true;
-			} else if (find == true
-					&& (a == '+' || a == '-' || a == '*' || a == '/')) {
-				find2 = true;
-			}
-		}
-		return find2;
-	}
-
 
 }

@@ -16,3 +16,6 @@
 /AppFrame$PointListener.class
 /AppFrame$SqrtListener.class
 /AppFrame$SquareListener.class
+/ArithmeticExpression.class
+/BinaryOp.class
+/AppFrame$BinaryOperatorListener.class
