@@ -10,7 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/** This class acts as a view in the MVC architecture. It instantiate all components of
+ * a GUI for the calculator and registers the buttons with appropriate event listeners.*/
 public class AppFrame {
+	
 	JFrame frame = new JFrame("Calculator");
 	JButton button0 = new JButton("0");
 	JButton button1 = new JButton("1");
@@ -34,8 +37,10 @@ public class AppFrame {
 	JButton buttonDel = new JButton("Delete");
 	JTextField field = new JTextField(32);
 	
+	// Model
 	private ArithmeticExpression exp = null;
 	
+	// Instantiates GUI components and registers them with event listeners.
 	public void activate() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel1 = new JPanel();
@@ -101,10 +106,10 @@ public class AppFrame {
 		button7.addActionListener(new DigitListener(7));
 		button8.addActionListener(new DigitListener(8));
 		button9.addActionListener(new DigitListener(9));
-		buttonMul.addActionListener(new BinaryOperatorListener(BinaryOp.MUL));
-		buttonDiv.addActionListener(new BinaryOperatorListener(BinaryOp.DIV));
-		buttonAdd.addActionListener(new BinaryOperatorListener(BinaryOp.ADD));
-		buttonSub.addActionListener(new BinaryOperatorListener(BinaryOp.SUB));
+		buttonMul.addActionListener(new BinaryOperatoreratorListener(BinaryOperator.MUL));
+		buttonDiv.addActionListener(new BinaryOperatoreratorListener(BinaryOperator.DIV));
+		buttonAdd.addActionListener(new BinaryOperatoreratorListener(BinaryOperator.ADD));
+		buttonSub.addActionListener(new BinaryOperatoreratorListener(BinaryOperator.SUB));
 		buttonEq.addActionListener(new EqListener());
 		buttonClear.addActionListener(new ClearListener());
 		buttonPoint.addActionListener(new PointListener());
@@ -116,85 +121,90 @@ public class AppFrame {
 		frame.setVisible(true);
 	}
 	
+	// Registers a given model with this view. 
 	public void register(ArithmeticExpression exp) {
 		this.exp = exp;
 	}
 	
+	// Updates the text field to display the input string. 
 	public void update(String s) {
 		field.setText(s);
 	}
 	
-	/** Listener class for buttons of digits. */
+	/** Listener class for digit buttons. */
 	class DigitListener implements ActionListener {
-		int value;
+		private int value;
 
-		public DigitListener(int v) {
-			value = v;
+		public DigitListener(int value) {
+			this.value = value;
 		}
 
+		// Inserts the corresponding digit to the text field when
+		// this button is clicked. 
 		public void actionPerformed(ActionEvent event) {
 			exp.insert(value);
 		}
 	}
 
-	/** Listener class for buttons of operators. */
-	class BinaryOperatorListener implements ActionListener {
-		BinaryOp op;
+	/** Listener class for operator buttons. */
+	class BinaryOperatoreratorListener implements ActionListener {
+		private BinaryOperator bop;
 
-		public BinaryOperatorListener(BinaryOp b) {
-			op = b;
+		public BinaryOperatoreratorListener(BinaryOperator op) {
+			bop = op;
 		}
 
+		// Inserts the corresponding operator to the text field when
+		// this button is clicked. 
 		public void actionPerformed(ActionEvent event) {
-			exp.insert(op);
+			exp.insert(bop);
 		}
 	}
 
-	/** Listener class for the "clear" button. */
+	/** Listener class for a button to clear the text field. */
 	class ClearListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			exp.clear();
 		}
 	}
 
-	/** Listener class for the = button. */
+	/** Listener class for a = button. */
 	class EqListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			exp.reduce();
 		}
 	}
 
-	/** Listener class for the decimal point button. */
+	/** Listener class for a decimal point button. */
 	class PointListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent event) {
 			exp.insertDecimalPoint();
 		}
 	}
 
-	/** Listener class for the ^2 button. */
+	/** Listener class for a ^2 button to square a number. */
 	class SquareListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			exp.square();
 		}
 	}
 
-	/** Listener class for the delete button. */
+	/** Listener class for a button to delete the last letter in the text field. */
 	class DelListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			exp.delete();
 		}
 	}
 
-	/** Listener class for the square root button. */
+	/** Listener class for a square-root button. */
 	class SqrtListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			exp.sqrt();
 		}
 	}
 	
+	// Changes the font style of the label of an input button to
+	// Font.DIALOG and the font size to a specified size. 
 	private void changeFont(JButton b, int n) {
 		Font font = new Font(Font.DIALOG, n, n);
 		b.setFont(font);

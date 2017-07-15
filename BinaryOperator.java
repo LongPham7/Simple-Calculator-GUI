@@ -1,5 +1,5 @@
-
-public enum BinaryOp {
+/** Enumeration class for the four basic arithmetic binary operators. */
+public enum BinaryOperator {
 	ADD, SUB, MUL, DIV;
 	
 	@Override
