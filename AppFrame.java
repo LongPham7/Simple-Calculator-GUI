@@ -10,36 +10,39 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/** This class acts as a view in the MVC architecture. It instantiate all components of
- * a GUI for the calculator and registers the buttons with appropriate event listeners.*/
+/**
+ * This class acts as a view in the MVC architecture. It instantiate all
+ * components of a GUI for the calculator and registers the buttons with
+ * appropriate event listeners.
+ */
 public class AppFrame {
-	
-	JFrame frame = new JFrame("Calculator");
-	JButton button0 = new JButton("0");
-	JButton button1 = new JButton("1");
-	JButton button2 = new JButton("2");
-	JButton button3 = new JButton("3");
-	JButton button4 = new JButton("4");
-	JButton button5 = new JButton("5");
-	JButton button6 = new JButton("6");
-	JButton button7 = new JButton("7");
-	JButton button8 = new JButton("8");
-	JButton button9 = new JButton("9");
-	JButton buttonMul = new JButton("*");
-	JButton buttonDiv = new JButton("/");
-	JButton buttonAdd = new JButton("+");
-	JButton buttonSub = new JButton("-");
-	JButton buttonEq = new JButton("=");
-	JButton buttonClear = new JButton("Clear");
-	JButton buttonPoint = new JButton(".");
-	JButton buttonSquare = new JButton("^2");
-	JButton buttonSqrt = new JButton("Square Root");
-	JButton buttonDel = new JButton("Delete");
-	JTextField field = new JTextField(32);
-	
+
+	private JFrame frame = new JFrame("Calculator");
+	private JButton button0 = new JButton("0");
+	private JButton button1 = new JButton("1");
+	private JButton button2 = new JButton("2");
+	private JButton button3 = new JButton("3");
+	private JButton button4 = new JButton("4");
+	private JButton button5 = new JButton("5");
+	private JButton button6 = new JButton("6");
+	private JButton button7 = new JButton("7");
+	private JButton button8 = new JButton("8");
+	private JButton button9 = new JButton("9");
+	private JButton buttonMul = new JButton("*");
+	private JButton buttonDiv = new JButton("/");
+	private JButton buttonAdd = new JButton("+");
+	private JButton buttonSub = new JButton("-");
+	private JButton buttonEq = new JButton("=");
+	private JButton buttonClear = new JButton("Clear");
+	private JButton buttonPoint = new JButton(".");
+	private JButton buttonSquare = new JButton("^2");
+	private JButton buttonSqrt = new JButton("Square Root");
+	private JButton buttonDel = new JButton("Delete");
+	private JTextField field = new JTextField(32);
+
 	// Model
 	private ArithmeticExpression exp = null;
-	
+
 	// Instantiates GUI components and registers them with event listeners.
 	public void activate() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,17 +123,17 @@ public class AppFrame {
 		frame.setSize(500, 500);
 		frame.setVisible(true);
 	}
-	
-	// Registers a given model with this view. 
+
+	// Registers a given model with this view.
 	public void register(ArithmeticExpression exp) {
 		this.exp = exp;
 	}
-	
-	// Updates the text field to display the input string. 
+
+	// Updates the text field to display the input string.
 	public void update(String s) {
 		field.setText(s);
 	}
-	
+
 	/** Listener class for digit buttons. */
 	class DigitListener implements ActionListener {
 		private int value;
@@ -140,7 +143,7 @@ public class AppFrame {
 		}
 
 		// Inserts the corresponding digit to the text field when
-		// this button is clicked. 
+		// this button is clicked.
 		public void actionPerformed(ActionEvent event) {
 			exp.insert(value);
 		}
@@ -155,7 +158,7 @@ public class AppFrame {
 		}
 
 		// Inserts the corresponding operator to the text field when
-		// this button is clicked. 
+		// this button is clicked.
 		public void actionPerformed(ActionEvent event) {
 			exp.insert(bop);
 		}
@@ -202,9 +205,9 @@ public class AppFrame {
 			exp.sqrt();
 		}
 	}
-	
+
 	// Changes the font style of the label of an input button to
-	// Font.DIALOG and the font size to a specified size. 
+	// Font.DIALOG and the font size to a specified size.
 	private void changeFont(JButton b, int n) {
 		Font font = new Font(Font.DIALOG, n, n);
 		b.setFont(font);

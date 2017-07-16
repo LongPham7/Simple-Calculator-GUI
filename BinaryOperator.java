@@ -1,7 +1,7 @@
 /** Enumeration class for the four basic arithmetic binary operators. */
 public enum BinaryOperator {
 	ADD, SUB, MUL, DIV;
-	
+
 	@Override
 	public String toString() {
 		switch (this) {
@@ -9,7 +9,7 @@ public enum BinaryOperator {
 			return "+";
 		case SUB:
 			return "-";
-		case MUL: 
+		case MUL:
 			return "*";
 		case DIV:
 			return "/";
