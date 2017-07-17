@@ -1,17 +1,18 @@
 /**
  * This class acts as a model in the MVC architecture, maintaining and
- * manipulating an arithmetic expression.
+ * manipulating an arithmetic expression that represents the state the
+ * calculator is in.
  * 
- * Its representation comprises three components: first operand, binary
+ * The arithmetic expression comprises three components: first operand, binary
  * operator, and second operand. If only the first operand has been given, the
  * binary operator is null.
  * 
  * A state of the model is said to be normal if and only if the first operand is
  * non-empty and the binary operator and second operand are empty; that is, the
- * state represents a single number, rather than a composite arithmetic
+ * arithmetic expression denotes a single number, rather than a composite
  * expression.
  * 
- * As in lambda calculus, reducing an arithmetic expression is to evaluate its
+ * As in lambda calculus, reducing an arithmetic expression is to calculate its
  * normal value. An arithmetic expression is reducible if and only if it can be
  * reduced.
  * 
@@ -80,7 +81,7 @@ public class ArithmeticExpression {
 			firstOperand = Double.toString(input * input);
 			refresh();
 		} else {
-			throw new Error("You cannot square the value in the text field.");
+			throw new Error("You cannot square the value.");
 		}
 	}
 
@@ -105,7 +106,7 @@ public class ArithmeticExpression {
 			firstOperand = Double.toString(Math.sqrt(input));
 			refresh();
 		} else {
-			throw new Error("A sqaure root cannot be derived.");
+			throw new Error("A sqaure root cannot be calculated.");
 		}
 	}
 
@@ -143,7 +144,7 @@ public class ArithmeticExpression {
 			result = first / second;
 			break;
 		default:
-			throw new Error("An operator is unspecified.");
+			throw new Error("Illegal operator");
 		}
 
 		firstOperand = Double.toString(result);

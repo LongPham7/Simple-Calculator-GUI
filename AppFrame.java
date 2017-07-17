@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * This class acts as a view in the MVC architecture. It instantiate all
+ * This class acts as a view in the MVC architecture. It creates all
  * components of a GUI for the calculator and registers the buttons with
  * appropriate event listeners.
  */

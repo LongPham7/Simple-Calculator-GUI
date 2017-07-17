@@ -14,7 +14,7 @@ public enum BinaryOperator {
 		case DIV:
 			return "/";
 		default:
-			throw new Error("This binary operator cannot be recognized.");
+			throw new Error("Illegal operator");
 		}
 	}
 }
